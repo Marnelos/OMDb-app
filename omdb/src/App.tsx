@@ -1,22 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import './App.css';
+import HomePage from './components/HomePage';
+import Alert from './components/Alert';
 
 function App() {
+
+  const [alertVisible, setAlertVisible] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      { alertVisible && <Alert onClose={()=>setAlertVisible(false)}>Alert</Alert>}
+      <HomePage onClick={()=>console.log("Show me the 'MOVIES' list.")}>MOVIES</HomePage>
+      <HomePage onClick={()=>{setAlertVisible(true)}}>SERIES</HomePage>
     </div>
   );
 }
