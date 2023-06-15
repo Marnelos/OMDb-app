@@ -1,28 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./App.css";
-import HomePage from "./components/HomePage";
-import Alert from "./components/Alert";
 import SearchBar from "./components/SearchBar";
+import Button from "./components/Button";
+
 
 function App() {
-  const [alertVisible, setAlertVisible] = useState(false);
-  // const [showButtons, setShowButtons] = useState(true);
+  const [error, setError] = useState("");
 
-  // const handleSearch = (searchItem: string) => {
-  //   console.log("HANDLE_SEARCH");
-  // };
-
-  // const handleToggleVisibility = () => {
-  //   setShowButtons(!showButtons);
-  // };
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <div className="App">
-      {/* <HomePage onClick={() => { console.log("Show me the 'MOVIES' list."); }}>MOVIES</HomePage>
-      <HomePage onClick={() => { setAlertVisible(true); }}>SERIES</HomePage> */}
       <SearchBar/>
-      
+      <Button children="MOVIES" name = "movie"/>
+      <Button children="SERIES" name = "series"/>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Details = () => {
+const Details = ({item}:any) => {
   return (
     <div>
-      
+      <h1>Details</h1>
     </div>
   )
 }
