@@ -1,37 +1,35 @@
-import React, { useState } from "react";
-import "./style.css";
+import React, { useState } from 'react'
+import Button from './Button'
+import './style.css'
 
-const SearchBar = () => {
-  const [input, setInput] = useState("");
-
-  //For the API
-  const fetchData = (value: string) => {
-    fetch("https://www.omdbapi.com/?i=tt1285016&apikey=8f9166aa")
-      .then((response) => response.json())
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(err => setError(err));
-  };
-
-  const handleChange = (value: string) => {
-    setInput(value);
-    fetchData(value);
-  };
-
-  return (
-    <div className="input-cont">
-      <input
-        placeholder="Type to search..."
-        value={input}
-        onChange={(e) => handleChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-export default SearchBar;
-function setError(err: any): any {
-  throw new Error("Function not implemented.");
+interface Prop{
+  list: string[];
 }
 
+const getFilteredData = (query: string, list: string[]) =>{
+   if(!query){
+    return list;
+   }
+   return list.filter(item => item.includes(query));
+}
+
+const SearchBar = (list:Prop) => {
+  const [query, setQuery] = useState("");
+
+  const filteredData = getFilteredData(query, list.list);
+
+  return (
+    <div className="search-bar">
+      <input type='text' placeholder='Search...' onChange={e=>{setQuery(e.target.value)}} />
+      {/* <div className="wrapper">
+        <div className="expand"> */}
+          <ul>
+            {filteredData.map(value => <h5 key={value}>{value}</h5>)}
+          </ul>
+        {/* </div>
+      </div> */}
+    </div>
+  )
+}
+
+export default SearchBar

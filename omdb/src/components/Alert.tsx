@@ -1,17 +1,11 @@
-import React, { Children, ReactNode } from 'react'
+//Θα ψάξω για το χρησιμοποιήσω στην περίπτωση λαθών και κακών κινήσεων του χρήστη.
+import React from 'react'
 
-interface Props {
-  children: ReactNode;
-  onClose: ()=>void;
-}
-
-const Alert = ({children,onClose}:Props) => {
+const Alert = () => {
   return (
-    <div className='alert alert-success alert-dismissible'>
-      {children} 
-      <button type="button" className="btn-close" onClick={onClose} data-bs-dismiss="alert" aria-label="Close"></button>
+    <div>
+      
     </div>
-    
   )
 }
 

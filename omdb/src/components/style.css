@@ -58,3 +58,31 @@ img{
   border-radius:  4px;
   width: 100px;
 }
+
+input[type='text']{
+  width: 250px;
+  padding:  8px 20px 8 px 45px;
+  border: #0e0d0dc7 solid 2px;
+  font-size: 18px;
+  border-radius:  25px;
+  background-position: 95%; 
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-image: url(search.svg); /*Για να μην δείχνει error με τους ελληνικούς χαρακτήρες στο path μου(προσωρινό!)*/
+}
+
+/* Για το smooth effect μετά από κάθε αναζήτηση. */
+.expand{
+  min-height: 2;
+}
+
+.wrapper{
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 200ms;
+}
+
+.wrapper.open{
+  grid-template-rows: 1fr;
+}

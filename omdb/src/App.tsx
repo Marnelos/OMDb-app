@@ -3,19 +3,18 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Button from "./components/Button";
+import NavigationBar from "./components/NavigationBar";
 
 
 function App() {
-  const [error, setError] = useState("");
-
-  const [buttonClicked, setButtonClicked] = useState(false);
 
   return (
     <div className="App">
-      <SearchBar/>
-      <Button children="MOVIES" name = "movie"/>
-      <Button children="SERIES" name = "series"/>
+    <NavigationBar />
+    <div className="content">
+      <Button childrenM='MOVIES' childrenS='SERIES' />
     </div>
+  </div>
   );
 }
 

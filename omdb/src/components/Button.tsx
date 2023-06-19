@@ -1,98 +1,171 @@
-import React, { useEffect, useState } from 'react'
-import useFetch from './useFetch';
-import { count } from 'console';
-import SearchBar from './SearchBar';
-import './style.css'
-import Details from './Details';
+import React, { useEffect, useState } from "react";
+import "./style.css";
+import DetailsPage from "./DetailsPage";
 
-interface Props{
-  name:string
-  children: string
+//Να το δω αύριο για κατανόηση..
+// import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
+
+// import NewWindow from 'react-new-window';
+
+// import {Routes, Route, useNavigate} from 'react-ro
+
+interface Props {
+  childrenM: string;
+  childrenS: string;
 }
 
-interface Item{
+interface ObjectApi {
   Title: string;
   Year: string;
   Rated: string;
   Released: string;
-  Runtime: string;
-  Genre: string;
-  Director: string;
-  Writer: string;
-  Actors: string;
-  Plot: string;
-  Language: string;
-  Country: string;
-  Awards: string;
-  Poster: string;
-  Ratings: Rating[];
-  Metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  imdbID: string;
-  Type: string;
-  DVD: string;
-  BoxOffice: string;
-  Production: string;
-  Website: string;
-  Response: string;
+  ID: string;
 }
 
-interface Rating {
-  Source: string;
-  Value: string;
-}
+const Button = ({ childrenM, childrenS }: Props) => {
+  const [clicked, setClicked] = useState(false);
 
-const Button = ({name, children}:Props) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const [data, setData] = useState<Item[]>([]);
+  const [details, setdetails] = useState<string[]>([]);
 
-  const [countMovie, setCountMovie] = useState(0);
+  const [idMatrix, setIdMatrix] = useState<string[]>([]);
 
+  const [data, setData] = useState<ObjectApi[]>([]);
 
-  const useClickHandle = async () => {
-    setIsPressed(true);
+  const handleClick = async (buttonName: string) => {
+    setClicked(true);
 
-    const responseFromApi = await fetch("https://www.omdbapi.com/?i=tt128500"+countMovie+"&apikey=8f9166aa").then((x) => x.json());
-    setCountMovie(countMovie+1);
-    console.log(responseFromApi);
-    if(responseFromApi.Type===name){
-      setData((prev)=>[...prev, responseFromApi]);
-    } else if(name==='series' || responseFromApi.Type==='episode'){
-      setData((prev)=>[...prev, responseFromApi]);
+    const url = new URL("http://www.omdbapi.com/");
+    url.searchParams.set("s", "one");
+    url.searchParams.set("type", buttonName === "series" ? "series" : "movie");
+    url.searchParams.set("apikey", "8f9166aa");
+
+    const returnedData = await fetch(url).then((obj) => obj.json());
+    for (let i = 0; i < 10; i++) {
+      setData((prev) => [...prev, returnedData.Search[i]]);
+      setIdMatrix((prev) => [...prev, returnedData.Search[i].imdbID]);
+      setdetails((prev) => [...prev, returnedData.Search[i].Title]);
     }
   };
-  
-  const handleLi = (item:Item) =>{
-    const url = `/details?item=${item.Title}`;
-    window.open(url, '_blank', 'noopener noreferrer');    
-    // <Details item={item}/>
-  }
+
+  const handleClickList = async (index: string) => {
+    const fetchedData = await fetch(
+      "http://www.omdbapi.com/?i=" +
+        encodeURIComponent(index) +
+        "&apikey=8f9166aa"
+    ).then((obj) => obj.json());
+
+    console.log(fetchedData);
+
+    const tab = window.open("/DETAILS/", "_blank");
+    if (tab) {
+      tab.document.write(`
+      <html>
+        <head>
+          <title>Details Page</title>
+        </head>
+        <body>
+          <h2>Details for: ${fetchedData.Title}</h2>
+          <h2><p>
+            <img src=${fetchedData.Poster} alt=${fetchedData.Title}/>
+            <br/>
+            Year of release: ${fetchedData.Released}<br/>
+            Rating: ${fetchedData.imdbRating}<br/>
+            Actors: ${fetchedData.Actors}<br/>
+            IMDb id: ${fetchedData.imdbID}
+          </p></h2>
+        </body>
+      </html>
+    `);
+
+      tab.document.close();
+    }
+  };
+
+  const listOfItems = data
+    .sort((a, b) => {
+      return a.Year > b.Year ? 1 : -1;
+    })
+    .map((item, index) => (
+      <li key={index} onClick={() => handleClickList(idMatrix[index])}>
+        {item.Title}
+      </li>
+    ));
 
   return (
-    <div id="button-container">
-      <button className="btn btn-light" onClick={useClickHandle}>{children}</button>
-      {
-        isPressed && (
-          <>
-            {/* <SearchBar/> */}
-            <ul>
-              {data
-              .sort((a,b)=>{
-                return a.Year > b.Year ? 1 : -1;
-              })
-              .map((item, index) => (
-                <li key={index} onClick={()=>handleLi(item)}>
-                  <img src={item.Poster} alt={item.Title}/>
-                  {/* {item.Title} */}
-                </li>
-                ))}
-            </ul>
-          </>
-        )
-      } 
-    </div>
-  )
-}
+    <>
+      {clicked ? <SearchBar list={details} /> : null}
+      <button
+        name={childrenM.toLowerCase()}
+        className="btn btn-dark"
+        onClick={(e) => {
+          handleClick(e.currentTarget.name);
+        }}
+      >
+        {childrenM}
+      </button>
+      <button
+        name={childrenS.toLowerCase()}
+        className="btn btn-dark"
+        onClick={(e) => {
+          handleClick(e.currentTarget.name);
+        }}
+      >
+        {childrenS}
+      </button>
 
-export default Button
+      {listOfItems}
+    </>
+  );
+};
+
+export default Button;
+
+function PopUp() {
+  throw new Error("Function not implemented.");
+}
+// const tab = window.open('/DETAILS/', '_blank');
+// if(tab){
+//   tab.document.write(`
+//   <html>
+//     <head>
+//       <title>Details Page</title>
+//     </head>
+//     <body>
+//       <h1>Details for ID: ${item.Title}</h1>
+//       <p>Hello There</p>
+//     </body>
+//   </html>
+// `);
+
+//   tab.document.close();
+// }
+
+// const detailsWindow = window.open('DetailsPage.tsx');
+
+// Κάνε μια ερώτηση για αυτό μόλις μιλήσετε!!!!!!!
+// <NewWindow>
+//   <h1>Hello There</h1>
+// </NewWindow>
+
+// <BrowserRouter>
+//   <Routes>
+//     <Route path='/details-page' element={
+//       <ul>
+//         <br/>
+//         {
+//           data.map((item, index)=>(
+//             <>
+//               <li key={index} /*onClick={()=>handleClickList(item)}*/>
+//                 <Link to="/details/" target='_blank'>
+//                   {item.Title}
+//                 </Link>
+//               </li>
+//             </>
+//           ))
+//         }
+//       </ul>}>
+//     </Route>
+//     <Route path='/details/' element={<DetailsPage id={id}/>}/>
+//   </Routes>
+// </BrowserRouter>
