@@ -1,12 +1,10 @@
-.App{
+.App {
   text-align: center;
-  font-family: "Neucha", cursive;
-  color: rgb(14, 5, 1)
 }
 
 .content{
-  align-items: center;
-  max-width: 500px;
+  align-items:center;
+  max-width: 600px;
   margin: 40px auto;
   padding: 20px;
 }
