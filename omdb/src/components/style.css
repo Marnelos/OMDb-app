@@ -90,3 +90,17 @@ a:hover{
 .list-group{
   width: 260px;
 }
+
+
+.details-container{
+  display: flex;
+}
+
+.information{
+  text-align: left;
+  color: #ffffff;
+}
+
+.details-container{
+  color: #ffffff;
+}

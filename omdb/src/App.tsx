@@ -13,13 +13,13 @@ function App() {
         <div className="App">
           <NavigationBar />
           <div className="content">
-            <Link to="/">Search Directly from the Api</Link>
+            <Link to="/direct">Search Directly from the Api</Link>
             <br/>
-            <Link to="/omdb-challenge">Challenge</Link>
+            <Link to="/">Challenge</Link>
             <br/>
             <Routes>
-              <Route path="/" element={<ChoiceDirect />}/>
-              <Route path="/omdb-challenge" element={<ChoiceChallenge />}/>
+              <Route path="/direct" element={<ChoiceDirect />}/>
+              <Route path="/*" element={<ChoiceChallenge state={false}/>}/>
             </Routes>
           </div>
         </div>

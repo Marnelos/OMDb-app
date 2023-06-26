@@ -2,33 +2,41 @@ import React, {useEffect} from 'react';
 import './style.css';
 
 interface Props{
-  id:string
+  item: ApiData | undefined;
 }
 
-const DetailsPage= ({id}:Props) => {
-  const details = (titleId:string) => {
-    const tab = window.open('/DETAILS/', '_blank');
-    if(tab){
-      tab.document.write(`
-      <html>
-        <head>
-          <title>Details Page</title>
-        </head>
-        <body>
-          <h1>Details for ID: ${titleId}</h1>
-          <p>Hello There</p>
-        </body>
-      </html>
-    `);
+interface ApiData {
+  Title: string;
+  Year: string;
+  Rated: string;
+  Released: string;
+  Runtime: string;
+  Genre: string;
+  Director: string;
+  Writer: string;
+  Actors: string;
+  Plot: string;
+  Poster: string;
+  imdbRating: string;
+}
 
-      tab.document.close();
-    }
-  };
-  
+const DetailsPage= ({item}:Props) => {
+
   return (
     <>
-        {details(id)} 
-        hello   
+      <div className="details-container">
+        <img src={item?.Poster} alt={item?.Title}/>
+        <h4>{item?.Title}</h4>
+      </div>
+      <div className="information">
+        <h4>{item?.Plot}</h4>
+        <br/>
+        <div>
+          <h4>Actors: {item?.Actors}</h4>
+          <h4>Director: {item?.Director}</h4>
+          <h4>Rating: {item?.imdbRating}</h4>
+        </div>
+      </div>
     </>
   );
 }
